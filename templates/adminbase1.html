@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="author" content="Untree.co">
+  <link rel="shortcut icon" href="{{ url_for('static', filename='newspaper.png') }}">
+
+  <meta name="description" content="" />
+  <meta name="keywords" content="" />
+
+  <link href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700,900" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='fonts/icomoon/style.css') }}">
+
+  <link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
+/>
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/jquery-ui.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/owl.carousel.min.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/owl.theme.default.min.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/owl.theme.default.min.css') }}">
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/jquery.fancybox.min.css') }}">
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap-datepicker.css') }}">
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='fonts/flaticon/font/flaticon.css') }}">
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/aos.css') }}">
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+<meta http-equiv="Pragma" content="no-cache" />
+<meta http-equiv="Expires" content="0" />
+  {% block style_block %}
+
+  {% endblock %}
+
+  <title>{% block title_block %}
+    2024CS008
+    
+     {% endblock %}</title>
+</head>
+
+<body>
+
+  <body data-spy="scroll" data-target=".site-navbar-target" data-offset="300">
+
+    <div class="site-wrap">
+
+      <div class="site-mobile-menu site-navbar-target">
+        <div class="site-mobile-menu-header">
+          <div class="site-mobile-menu-close mt-3">
+            <span class="icon-close2 js-menu-toggle"></span>
+          </div>
+        </div>
+        <div class="site-mobile-menu-body"></div>
+      </div>
+
+      <div class="top-bar py-2" id="home-section">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-6 text-center text-lg-right order-lg-2">
+              <ul class="social-media m-0 p-0">
+                <li><a href="fb.com" class="p-2"><span class="icon-facebook"></span></a></li>
+                <li><a href="x.com" class="p-2"><span class="icon-twitter"></span></a></li>
+                <li><a href="ig.com" class="p-2"><span class="icon-instagram"></span></a></li>
+                <li><a href="#" class="p-2"><span class="icon-linkedin"></span></a></li>
+              </ul>
+            </div>
+            <div class="col-md-6 text-center text-lg-left order-lg-1">
+              <p class="mb-0 d-inline-flex">
+                <span class="mr-3"><a href="tel://#" class="d-flex align-items-center"><span
+                      class="icon-phone mr-2"></span><span>+639 1234 567 890</span></a></span>
+                <span><a href="tel://#" class="d-flex align-items-center"><span
+                      class="icon-envelope mr-2"></span><span>admin@mcl.com</span></a></span>
+              </p>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <header class="site-navbar py-4 js-sticky-header site-navbar-target" role="banner">
+
+        <div class="container">
+          <div class="row align-items-center">
+
+            <div class="col-11 col-xl-2">
+              <h1 class="mb-0 site-logo"><a href="{{ url_for('main.main_page') }}" class="mb-0">2024CS008<span
+                    class="text-primary">.</span> </a></h1>
+            </div>
+            <div class="col-12 col-md-10 d-none d-xl-block">
+              <nav class="site-navigation position-relative text-right" role="navigation">
+
+                <ul class="site-menu main-menu js-clone-nav mr-auto d-none d-lg-block">
+
+                    {% if user.role == 'A' %}
+                        <li><a href="{{ url_for('main.addarticle') }}" class="nav-link">Add Article</a></li>
+                   
+                        <li><a href="{{ url_for('main.managearticle') }}" class="nav-link">Article Management</a></li>
+                        <li><a href="{{ url_for('main.manageuser') }}" class="nav-link">User Management</a></li>
+                        <li><a href="{{ url_for('main.manageaudit') }}" class="nav-link">Audit Log</a></li>
+                        {# <li><a href="{{ url_for('main.managemodels') }}" class="nav-link">Models</a></li> #}
+                        <li><a href="{{ url_for('main.logout') }}" class="nav-link">Logout</a></li>
+                    {% elif user.role == 'C' %}
+                        <li><a href="{{ url_for('main.addarticle') }}" class="nav-link">Add Article</a></li>
+                        <li><a href="{{ url_for('main.logout') }}" class="nav-link">Logout</a></li>
+                    {% endif %}
+
+                </ul>
+              </nav>
+            </div>
+
+{% block content_block %}
+
+{% endblock %}
+
+
+         
+
+     <footer class="site-footer">
+       <div class="container">
+         <div class="row">
+           <div class="col-md-9">
+             <div class="row">
+               <div class="col-md-5">
+                 <h2 class="footer-heading mb-4">About Us</h2>
+                 <p>Our platform uses advanced sentiment analysis to detect emotional triggers in fake news, offering a more accurate way to spot misinformation. We’re dedicated to a safer digital space, empowering Filipino users to trust the news they read.</p>
+               </div>
+               <div class="col-md-3 ml-auto">
+                 <h2 class="footer-heading mb-4">References</h2>
+                 <ul class="list-unstyled">
+                   <li><a href="https://www.philstar.com/headlines/2023/06/14/2273808/media-criticism-linked-low-trust-newsdigital-news-report-2023">Chua</a></li>
+                   <li><a href="https://www.rappler.com/technology/social-media-news-trust-decreases-filipinos-2021-reuters-digital-news-report/">Gonzales</a></li>
+                   <li><a href="https://newsinfo.inquirer.net/1678248/fake-news-a-problem-in-ph-9-in-10-filipinos-agree-says-pulse-asia">Lalu</a></li>
+                   <li><a href="https://www.spot.ph/newsfeatures/culture/96133/five-in-10-filipinos-find-difficulty-in-spotting-fake-news-sws-a4833-20220227?s=naldfvnqqg39bci5achvd9jf12">Colcol</a></li>
+                 </ul>
+               </div>
+               <div class="col-md-3">
+                 <h2 class="footer-heading mb-4">Follow Us</h2>
+                 <a href="#" class="pl-0 pr-3"><span class="icon-facebook"></span></a>
+                 <a href="#" class="pl-3 pr-3"><span class="icon-twitter"></span></a>
+                 <a href="#" class="pl-3 pr-3"><span class="icon-instagram"></span></a>
+                 <a href="#" class="pl-3 pr-3"><span class="icon-linkedin"></span></a>
+
+         <div class="mt-3">
+               <a href="{{ url_for('main.disclaimer') }}" class="footer-heading mb-4">Disclaimer</a>
+              </div>
+               </div>
+             </div>
+           </div>
+           
+         </div>
+         <div class="row pt-5 mt-5 text-center">
+           <div class="col-md-12">
+             <div class="border-top pt-5">
+               <p>Copyright &copy;<script>document.write(new Date().getFullYear());</script>. All Rights Reserved. &mdash; Designed with love by <a href="https://untree.co">Untree.co</a>  Distributed By <a href="https://themewagon.com">ThemeWagon</a> <!-- License information: https://untree.co/license/ -->
+               </p>
+             </div>
+           </div>
+
+         </div>
+       </div>
+     </footer>
+
+
+            <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+            <script src="{{ url_for('static', filename='js/jquery-3.3.1.min.js') }}"></script>
+            <script src="{{ url_for('static', filename='js/jquery-migrate-3.0.1.min.js') }}"></script>
+            <script src="{{ url_for('static', filename='js/jquery-ui.js') }}"></script>
+            <script src="{{ url_for('static', filename='js/popper.min.js') }}"></script>
+            <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+            <script src="{{ url_for('static', filename='js/owl.carousel.min.js') }}"></script>
+            <script src="{{ url_for('static', filename='js/jquery.stellar.min.js') }}"></script>
+            <script src="{{ url_for('static', filename='js/jquery.countdown.min.js') }}"></script>
+            <script src="{{ url_for('static', filename='js/bootstrap-datepicker.min.js') }}"></script>
+            <script src="{{ url_for('static', filename='js/jquery.easing.1.3.js') }}"></script>
+            <script src="{{ url_for('static', filename='js/aos.js') }}"></script>
+            <script src="{{ url_for('static', filename='js/jquery.fancybox.min.js') }}"></script>
+            <script src="{{ url_for('static', filename='js/jarallax.min.js') }}"></script>
+            <script src="{{ url_for('static', filename='js/jarallax-element.min.js') }}"></script>
+            <script src="{{ url_for('static', filename='js/lozad.min.js') }}"></script>
+            <script src="{{ url_for('static', filename='js/modernizr.min.js') }}"></script>
+            <script src="{{ url_for('static', filename='js/three.min.js') }}"></script>
+            <script src="{{ url_for('static', filename='js/TweenMax.min.js') }}"></script>
+            <script src="{{ url_for('static', filename='js/OBJLoader.js') }}"></script>
+            <script src="{{ url_for('static', filename='js/ParticleHead.js') }}"></script>
+            <script src="{{ url_for('static', filename='js/jquery.sticky.js') }}"></script>
+            <script src="{{ url_for('static', filename='js/typed.js') }}"></script>
+
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        
+
+  </body>
+
+</html>

@@ -1,0 +1,239 @@
+{% extends "adminbase1.html" %} {% block style_block %}
+<style>
+  .fade-out {
+    transition: opacity 1s ease-out;
+    opacity: 0;
+  }
+
+</style>
+
+{% endblock %} {% block title_block %} Update User {% endblock %} {% block
+content_block %}
+
+<div class="container mt-5">
+  <div class="row mb-4 align-items-start">
+    <div class="col text-start">
+      <div class="d-flex align-items-center mb-2">
+        <a
+          href="{{ url_for('main.manageuser') }}"
+          class="text-decoration-none text-dark me-2"
+          style="font-size: 2rem"
+        >
+          <i class="bi bi-arrow-left-short fs-4" style="font-size: 2rem"></i>
+        </a>
+
+        <h3 class="mb-0">Create User</h3>
+      </div>
+      <p>Fill out the form below to register a new user account.</p>
+    </div>
+  </div>
+  <!--
+  <div class="row mb-4 align-items-start">
+    <div class="col text-start">
+      <h3>Update User</h3>
+      <p>Update user information and manage account settings below.</p>
+    </div>
+  </div>-->
+
+  <div class="bg-white rounded p-4 shadow-sm">
+    <!--<div id="alertBoxSuccess" class="alert alert-success text-center">Test</div>-->
+
+    {% if error %}
+    <div id="alertBox" class="alert alert-danger text-center">{{ error }}</div>
+
+    <script>
+      setTimeout(function () {
+        const alertBox = document.getElementById("alertBox");
+        if (alertBox) {
+          alertBox.classList.add("fade-out");
+          setTimeout(() => (alertBox.style.display = "none"), 1000); // wait for fade to finish
+        }
+      }, 3000);
+    </script>
+
+    {% endif %} {% if success %}
+    <div id="alertBoxSuccess" class="alert alert-success text-center">
+      {{ success }}
+    </div>
+
+    <script>
+      setTimeout(function () {
+        const alertBox = document.getElementById("alertBoxSuccess");
+        if (alertBox) {
+          alertBox.classList.add("fade-out");
+          setTimeout(() => (alertBox.style.display = "none"), 1000); // wait for fade to finish
+        }
+      }, 3000);
+    </script>
+
+    {% endif %}
+    <!-- Form -->
+    <form method="POST" action="{{ url_for('main.createuser') }}">
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+              <label for="username" class="form-label">Username</label>
+              <input
+                type="text"
+                class="form-control"
+                id="username"
+                name="username"
+                placeholder="Enter your username"
+              />
+            </div>
+          </div>
+      
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label for="fname" class="form-label">Firstname</label>
+              <input
+                type="text"
+                class="form-control"
+                id="fname"
+                name="fname"
+                placeholder="Enter your firstname"
+              />
+            </div>
+      
+            <div class="col-md-6">
+              <label for="lname" class="form-label">Lastname</label>
+              <input
+                type="text"
+                class="form-control"
+                id="lname"
+                name="lname"
+                placeholder="Enter your lastname"
+              />
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label for="email" class="form-label">Email</label>
+              <input
+                type="text"
+                class="form-control"
+                id="email"
+                name="email"
+                placeholder="Enter your email"
+              />
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label for="password" class="form-label">Password</label>
+              <input
+                type="password"
+                class="form-control"
+                id="password"
+                name="password"
+                placeholder="Enter your password"
+              />
+            </div>
+            <div class="col-md-6">
+              <label for="confirm-password" class="form-label"
+                >Confirm Password</label
+              >
+              <input
+                type="password"
+                class="form-control"
+                id="confirm-password"
+                name="confirm-password"
+                placeholder="Confirm your password"
+              />
+            </div>
+          </div>
+    <!--
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <label for="password" class="form-label">Password</label>
+        <input
+          type="password"
+          class="form-control"
+          id="password"
+          placeholder="Enter your password"
+        />
+      </div>
+      <div class="col-md-6">
+        <label for="confirm-password" class="form-label"
+          >Confirm Password</label
+        >
+        <input
+          type="password"
+          class="form-control"
+          id="confirm-password"
+          placeholder="Confirm your password"
+        />
+      </div>
+    </div>
+
+    -->
+
+    <input type="hidden" name="role" id="selected-role" />
+
+    <div class="row mb-5">
+      <div class="col-md-6">
+        <label for="role" class="form-label">Role</label>
+        <div class="dropdown">
+          <button
+            class="form-control d-flex justify-content-between align-items-center"
+            type="button"
+            id="role"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          > 
+            <span class="text-start" id="role-text">
+                Select your role
+            </span>
+
+            <span class="dropdown-toggle ms-2"></span>
+          </button>
+          <ul class="dropdown-menu w-100" aria-labelledby="role">
+            <li><a class="dropdown-item"  data-value="A">Admin</a></li>
+            <li><a class="dropdown-item" data-value="C">Collaborator</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      document.querySelectorAll(".dropdown-item").forEach((item) => {
+        item.addEventListener("click", function (e) {
+          const selectedValue = e.target.getAttribute("data-value");
+
+          document.getElementById("role-text").textContent =
+            e.target.textContent;
+
+          document.getElementById("selected-role").value = selectedValue;
+        });
+      });
+    </script>
+
+
+    <div class="row mb-4">
+      <div class="col d-flex">
+       
+          <button type="submit" class="btn btn-primary px-3">
+            Create
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!--
+      <div class="row mb-4">
+        <div class="col-md-6">
+          <label for="role" class="form-label">Role</label>
+          <input
+            type="role"
+            class="form-control"
+            id="role"
+            placeholder="Enter your role"
+          />
+        </div>
+      </div>-->
+  </div>
+</div>
+
+{% endblock %}

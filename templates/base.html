@@ -1,0 +1,321 @@
+<!doctype html>
+<html lang="en">
+
+
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="author" content="Untree.co">
+  <link rel="shortcut icon" href="{{ url_for('static', filename='newspaper.png') }}">
+
+  <meta name="description" content="" />
+  <meta name="keywords" content="" />
+
+
+
+  <link href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700,900" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='fonts/icomoon/style.css') }}">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/jquery-ui.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/owl.carousel.min.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/owl.theme.default.min.css') }}">
+
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/jquery.fancybox.min.css') }}">
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap-datepicker.css') }}">
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='fonts/flaticon/font/flaticon.css') }}">
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/aos.css') }}">
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.4.2/mammoth.browser.min.js"></script>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  
+
+
+
+  
+  <style>
+    .site-mobile-menu-body .site-menu {
+      list-style: none; /* Removes bullet points */
+      padding: 0; /* Removes default padding */
+      margin: 0; /* Removes default margin */
+  }
+  
+  .site-mobile-menu-body .site-menu li {
+      display: block; /* Makes the list items inline */
+      margin-right: 15px; /* Adds spacing between items */
+      position: relative;
+  }
+  
+  .site-mobile-menu-body .site-menu li a {
+      text-decoration: none; /* Removes underline from links */
+      color: #21325E; /* Sets text color */
+      font-family: "Inter";
+      font-size: 20px;
+  }
+  
+  .site-mobile-menu-body .site-menu li a:hover {
+      color: #007bff; /* Changes color on hover */
+  }
+  
+  </style>
+
+  {% block style_block %}
+
+  {% endblock %}
+
+
+  <title>{% block title_block %}
+2024CS008
+
+ {% endblock %}</title>
+
+</head>
+
+
+
+<body data-spy="scroll" data-target=".site-navbar-target" data-offset="300">
+
+  <div class="site-wrap">
+
+    <div class="site-mobile-menu site-navbar-target">
+      <div class="site-mobile-menu-header">
+          <div class="site-mobile-menu-close mt-3">
+              <span class="icon-close2 js-menu-toggle"></span>
+          </div>
+      </div>
+      <div class="site-mobile-menu-body">
+          <ul class="site-menu main-menu mr-auto">
+              <li><a href="{{ url_for('main.main_page') }}" class="nav-link">Home</a></li>
+              <li><a href="{{ url_for('main.main_page') }}#model-section" class="nav-link">Model</a></li>
+              <li><a href="{{ url_for('main.main_page') }}#fake-section" class="nav-link">Fake News</a></li>
+              <li><a href="{{ url_for('main.main_page') }}#contact-section" class="nav-link">Contact</a></li>
+               <li><a href="{{ url_for('main.howtouse') }}" class="nav-link">How To Use</a></li>
+              <li><a href="{{ url_for('main.factcheck') }}" class="nav-link">News Archive</a></li>
+              <li><a href="{{ url_for('main.download') }}" class="nav-link">Download</a></li>
+          </ul>
+      </div>
+  </div>
+  
+
+    <div class="top-bar py-2" id="home-section">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6 text-center text-lg-right order-lg-2">
+            <ul class="social-media m-0 p-0">
+              <li><a href="fb.com" class="p-2"><span class="icon-facebook"></span></a></li>
+              <li><a href="x.com" class="p-2"><span class="icon-twitter"></span></a></li>
+              <li><a href="ig.com" class="p-2"><span class="icon-instagram"></span></a></li>
+              <li><a href="#" class="p-2"><span class="icon-linkedin"></span></a></li>
+            </ul>
+          </div>
+          <div class="col-md-6 text-center text-lg-left order-lg-1">
+            <p class="mb-0 d-inline-flex">
+              <span class="mr-3"><a href="tel://#" class="d-flex align-items-center"><span class="icon-phone mr-2"></span><span>+639 1234 567 890</span></a></span>
+              <span><a href="tel://#" class="d-flex align-items-center"><span class="icon-envelope mr-2"></span><span>admin@mcl.com</span></a></span>
+            </p>
+          </div>
+
+        </div>
+      </div> 
+    </div>
+   
+
+
+
+
+
+    <header class="site-navbar py-4 js-sticky-header site-navbar-target" role="banner">
+
+      <div class="container">
+        <div class="row align-items-center">
+
+          <div class="col-11 col-xl-2">
+            <h1 class="mb-0 site-logo"><a href="{{ url_for('main.main_page') }}" class="mb-0">2024CS008<span class="text-primary">.</span> </a></h1>
+          </div>
+          <div class="col-12 col-md-10 d-none d-xl-block">
+            <nav class="site-navigation position-relative text-right" role="navigation">
+
+              <ul class="site-menu main-menu mr-auto d-none d-lg-block">
+                <li><a href="{{ url_for('main.main_page') }}" class="nav-link">Home</a></li>
+                <li><a href="{{ url_for('main.main_page') }}#model-section" class="nav-link">Model</a></li>
+                <li>
+                  <a href="{{ url_for('main.main_page') }}#fake-section" class="nav-link">Fake News</a>
+                </li>
+                <li><a href="{{ url_for('main.main_page') }}#contact-section" class="nav-link">Contact</a></li>
+                    <li><a href="{{ url_for('main.howtouse') }}" class="nav-link">How To Use</a></li>
+                <li><a href="{{url_for('main.factcheck')}}">News Archive</a></li>
+                <li><a href="{{url_for('main.download')}}">Download</a></li>
+              </ul>
+
+              <!--
+                <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" id="moreDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                      More
+                  </a>
+                  <ul class="dropdown-menu" aria-labelledby="moreDropdown">
+                      <li><a class="dropdown-item" href="fact.html">Fact Check</a></li>
+                      <li><a class="dropdown-item" href="download.html">Download</a></li>
+                  </ul>
+                </li>
+                -->
+
+              </ul>
+            </nav>
+          </div>
+
+
+          <div class="d-inline-block d-xl-none ml-md-0 mr-auto py-3" style="position: relative; top: 3px;"><a href="#" class="site-menu-toggle js-menu-toggle text-black"><span class="icon-menu h3"></span></a></div>
+
+        </div>
+      </div>
+      
+    </header>
+<!-- NAVIGATION BAR 
+
+
+    <header class="site-navbar py-4 js-sticky-header site-navbar-target" role="banner">
+
+      <div class="container">
+        <div class="row align-items-center">
+
+          <div class="col-11 col-xl-2">
+
+
+            <h1 class="mb-0 site-logo"><a href="/" class="mb-0">2024CS008<span class="text-primary">.</span> </a></h1>
+
+
+          </div>
+          <div class="col-12 col-md-10 d-none d-xl-block">
+            <nav class="site-navigation position-relative text-right" role="navigation">
+
+              <ul class="site-menu main-menu js-clone-nav mr-auto d-none d-lg-block">
+                <ul class="site-menu main-menu js-clone-nav mr-auto d-none d-lg-block">
+                <li><a href="{{ url_for('main.main_page') }}#home-section" class="nav-link">Home</a></li>
+                <li><a href="{{ url_for('main.main_page') }}#model-section" class="nav-link">Model</a></li>
+                <li>
+                  <a href="{{ url_for('main.main_page') }}#fake-section" class="nav-link">Fake News</a>
+                </li>
+                <li><a href="{{ url_for('main.main_page') }}#contact-section" class="nav-link">Contact</a></li>
+                <li><a href="{{url_for('main.download')}}" class="nav-link">Download</a></li>
+              </ul>
+       
+              </ul>
+            </nav>
+          </div>
+         <div class="d-inline-block d-xl-none ml-md-0 mr-auto py-3" style="position: relative; top: 3px;"><a href="#" class="site-menu-toggle js-menu-toggle text-black"><span class="icon-menu h3"></span></a></div>
+
+        </div>
+      </div>
+      
+    </header>-->
+
+
+
+
+ {% block content_block %}
+
+ {% endblock %}
+
+
+          
+
+      <footer class="site-footer mt-auto" >
+        <div class="container">
+          <div class="row">
+            <div class="col-md-9">
+              <div class="row">
+                <div class="col-md-5">
+                  <h2 class="footer-heading mb-4">About Us</h2>
+                  <p>Our platform uses advanced sentiment analysis to detect emotional triggers in fake news, offering a more accurate way to spot misinformation. We’re dedicated to a safer digital space, empowering Filipino users to trust the news they read.</p>
+                </div>
+                <div class="col-md-3 ml-auto">
+                  <h2 class="footer-heading mb-4">References</h2>
+                  <ul class="list-unstyled">
+                    <li><a href="https://www.philstar.com/headlines/2023/06/14/2273808/media-criticism-linked-low-trust-newsdigital-news-report-2023">Chua</a></li>
+                    <li><a href="https://www.rappler.com/technology/social-media-news-trust-decreases-filipinos-2021-reuters-digital-news-report/">Gonzales</a></li>
+                    <li><a href="https://newsinfo.inquirer.net/1678248/fake-news-a-problem-in-ph-9-in-10-filipinos-agree-says-pulse-asia">Lalu</a></li>
+                    <li><a href="https://www.spot.ph/newsfeatures/culture/96133/five-in-10-filipinos-find-difficulty-in-spotting-fake-news-sws-a4833-20220227?s=naldfvnqqg39bci5achvd9jf12">Colcol</a></li>
+                  </ul>
+                </div>
+                <div class="col-md-3">
+                  <h2 class="footer-heading mb-4">Follow Us</h2>
+                  <a href="#" class="pl-0 pr-3"><span class="icon-facebook"></span></a>
+                  <a href="#" class="pl-3 pr-3"><span class="icon-twitter"></span></a>
+                  <a href="#" class="pl-3 pr-3"><span class="icon-instagram"></span></a>
+                  <a href="#" class="pl-3 pr-3"><span class="icon-linkedin"></span></a>
+
+		  <div class="mt-3">
+   			 <a href="{{ url_for('main.disclaimer') }}" class="footer-heading mb-4">Disclaimer</a>
+  	   	  </div>
+                </div>
+              </div>
+            </div>
+            
+          </div>
+          <div class="row pt-5 mt-5 text-center">
+            <div class="col-md-12">
+              <div class="border-top pt-5">
+                <p>Copyright &copy;<script>document.write(new Date().getFullYear());</script>. All Rights Reserved. &mdash; Designed with love by <a href="https://untree.co">Untree.co</a>  Distributed By <a href="https://themewagon.com">ThemeWagon</a> <!-- License information: https://untree.co/license/ -->
+                </p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </footer>
+
+    </div> <!-- .site-wrap -->
+
+    <script src="{{ url_for('static', filename='js/jquery-3.3.1.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery-migrate-3.0.1.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery-ui.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/popper.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/owl.carousel.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery.stellar.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery.countdown.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap-datepicker.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery.easing.1.3.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/aos.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery.fancybox.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jarallax.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jarallax-element.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/lozad.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/modernizr.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/three.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/TweenMax.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/OBJLoader.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/ParticleHead.js') }}"></script>
+
+    <script src="{{ url_for('static', filename='js/jquery.sticky.js') }}"></script>
+
+    <script src="{{ url_for('static', filename='js/typed.js') }}"></script>
+    <script>
+      var typed = new Typed('.typed-words', {
+        strings: ["Enhanced Model","Sentiment Analysis"],
+        typeSpeed: 80,
+        backSpeed: 80,
+        backDelay: 4000,
+        startDelay: 1000,
+        loop: true,
+        showCursor: true
+      });
+    </script>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+
+  </body>
+  </html>

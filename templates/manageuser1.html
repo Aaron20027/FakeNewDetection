@@ -1,0 +1,276 @@
+{% extends "adminbase1.html" %} {% block style_block %}
+<style>
+  .fade-out {
+    transition: opacity 1s ease-out;
+    opacity: 0;
+  }
+</style>
+{% endblock %} {% block title_block %} User Management {% endblock %} {% block
+content_block %}
+
+<div class="container mt-5">
+  <div class="row mb-4 align-items-start">
+    <div class="col text-start">
+      <h3>User Management</h3>
+      <p>
+        View, update, or remove user accounts to maintain accurate and
+        up-to-date user information.
+      </p>
+    </div>
+  </div>
+
+
+  {% if error %}
+  <div class="row mb-1">
+    <div class="col"><div id="alertBox" class="alert alert-danger text-center">
+        {{ error }}
+      </div></div>
+  </div>
+      <script>
+        setTimeout(function () {
+          const alertBox = document.getElementById("alertBox");
+          if (alertBox) {
+            alertBox.classList.add("fade-out");
+            setTimeout(() => (alertBox.style.display = "none"), 1000); // wait for fade to finish
+          }
+        }, 3000);
+      </script>
+    
+
+      {% endif %} {% if success %}
+
+      <div class="row mb-1">
+        <div class="col"><div id="alertBoxSuccess" class="alert alert-success text-center">
+            {{ error }}
+          </div></div>
+      </div>
+
+
+      <script>
+        setTimeout(function () {
+          const alertBox = document.getElementById("alertBoxSuccess");
+          if (alertBox) {
+            alertBox.classList.add("fade-out");
+            setTimeout(() => (alertBox.style.display = "none"), 1000); // wait for fade to finish
+          }
+        }, 3000);
+      </script>
+    
+      {% endif %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <form method="GET" action="{{ url_for('main.searchuser') }}">
+    <div class="row mb-4 align-items-center gx-1 gy-2">
+      <div class="col-4 ">
+        <input
+          type="text"
+          class="form-control"
+          id="search1"
+          name="search1"
+          value="{{search if search else '' }}"
+          placeholder="Search"
+        />
+      </div>
+
+      <input type="hidden" name="filter" id="selected-filter" />
+
+      <div class="col-3">
+        <div class="dropdown">
+          <button
+            class="form-control d-flex justify-content-between align-items-center"
+            type="button"
+            id="filter"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            <span class="text-truncate" id="filter-text"
+            style="max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Filter</span>
+            <span class="dropdown-toggle ms-2"></span>
+          </button>
+          <ul class="dropdown-menu w-auto" aria-labelledby="filter">
+            <li>
+              <a class="dropdown-item text-truncate" href="#" data-value="1A"
+                >Username: Ascending</a
+              >
+            </li>
+            <li>
+              <a class="dropdown-item text-truncate" href="#" data-value="1D"
+                >Username: Descending</a
+              >
+            </li>
+            <li>
+              <a class="dropdown-item text-truncate" href="#" data-value="2A"
+                >Name: Ascending</a
+              >
+            </li>
+            <li>
+              <a class="dropdown-item text-truncate" href="#" data-value="2D"
+                >Name: Descending</a
+              >
+            </li>
+            <li>
+              <a class="dropdown-item text-truncate" href="#" data-value="3A"
+                >Email: Ascending</a
+              >
+            </li>
+            <li>
+              <a class="dropdown-item text-truncate" href="#" data-value="3D"
+                >Email: Descending</a
+              >
+            </li>
+            <li>
+              <a class="dropdown-item text-truncate" href="#" data-value="4A"
+                >Date Created: Ascending</a
+              >
+            </li>
+            <li>
+              <a class="dropdown-item text-truncate" href="#" data-value="4D"
+                >Date Created: Descending</a
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+      <script>
+        document.querySelectorAll(".dropdown-item").forEach((item) => {
+          item.addEventListener("click", function (e) {
+            const selectedValue = e.target.getAttribute("data-value");
+
+            document.getElementById("filter-text").textContent =
+              e.target.textContent;
+
+            document.getElementById("selected-filter").value = selectedValue;
+          });
+        });
+      </script>
+
+     
+
+      <div class="col-auto">
+        <button type="submit" class="btn btn-primary w-100">Search</button>
+      </div></form>
+
+      <div class="col-auto ms-auto">
+        <form method="GET" action="{{ url_for('main.createuser') }}">
+          <button type="createuser" class="btn btn-primary px-3 w-100">
+            Create User
+          </button>
+        </form>
+      </div>
+    </div>
+
+    
+
+    
+ 
+
+  <div class="bg-white rounded p-2 pt-2 shadow-sm">
+    <div class="row mb-3 h-auto">
+      <div class="col">
+        <div class="table-responsive">
+          <table class="table table-bordered table-hover w-100 ">
+            <thead>
+              <tr>
+                <th>Username</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Status</th>
+                <th>Role</th>
+                <th>Date Created</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for user in items %}
+              <tr>
+                <td>{{ user.username}}</td>
+                <td>{{ user.first_name ~ ' ' ~ user.last_name }}</td>
+                <td>{{ user.email }}</td>
+
+                {% if user.enabled == 1 %}
+                <td>Enabled</td>
+                {% else %}
+                <td>Disabled</td>
+                {% endif %} {% if user.role == 'A' %}
+                <td>Admin</td>
+                {% else%}
+                <td>Collaborator</td>
+                {% endif %}
+
+                <td>{{ user.data_created }}</td>
+                <td>
+                  <form action="{{ url_for('main.actionuser') }}" method="post">
+                    <input
+                      type="hidden"
+                      name="user_id"
+                      value="{{ user.user_id }}"
+                    />
+                    <button
+                      type="submit"
+                      name="action"
+                      value="remove"
+                      class="btn btn-danger btn-sm"
+                    >
+                      Remove
+                    </button>
+                    <button
+                      type="submit"
+                      name="action"
+                      value="update"
+                      class="btn btn-success btn-sm text-white"
+                    >
+                      Update
+                    </button>
+                  </form>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+
+          <nav aria-label="User table pagination">
+            <ul class="pagination justify-content-start">
+              {% if page > 1 %}
+              <li class="page-item">
+                <a
+                  class="page-link"
+                  href="{{ url_for(url, page=page-1, search1=request.args.get('search1', ''), filter=request.args.get('filter', '')) }}"
+                  >Previous</a
+                >
+              </li>
+              {% endif %} {% for p in range(1, total_pages + 1) %}
+              <li class="page-item {% if p == page %}active{% endif %}">
+                <a
+                  class="page-link"
+                  href="{{ url_for(url, page=p, search1=request.args.get('search1', ''), filter=request.args.get('filter', '')) }}"
+                  >{{ p }}</a
+                >
+              </li>
+              {% endfor %} {% if page < total_pages %}
+              <li class="page-item">
+                <a
+                  class="page-link"
+                  href="{{ url_for(url, page=page+1, search1=request.args.get('search1', ''), filter=request.args.get('filter', '')) }}"
+                  >Next</a
+                >
+              </li>
+              {% endif %}
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,102 @@
+{% extends "adminbase1.html" %} {% block style_block %}
+<style>
+  .fade-out {
+    transition: opacity 1s ease-out;
+    opacity: 0;
+  }
+</style>
+{% endblock %} {% block title_block %} Audit Log {% endblock %} {% block
+content_block %}
+
+<div class="container mt-5">
+  <div class="row mb-4 align-items-start">
+    <div class="col text-start">
+      <h3>Audit Log</h3>
+      <p>
+        Track all user activities and system changes for accountability and
+        security.
+      </p>
+    </div>
+  </div>
+
+  <form method="GET" action="{{ url_for('main.searchaudit') }}">
+    <div class="row mb-4 align-items-center gx-1 gy-2">
+      <div class="col-4">
+        <input
+          type="text"
+          class="form-control"
+          id="search1"
+          name="search1"
+          value="{{search if search else '' }}"
+          placeholder="Search"
+        />
+      </div>
+
+      <div class="col-auto">
+        <button type="submit" class="btn btn-primary w-100">Search</button>
+      </div>
+    </div>
+  </form>
+
+  <div class="bg-white rounded p-2 pt-2 shadow-sm">
+    <div class="row mb-3 h-auto">
+      <div class="col">
+        <div class="table-responsive">
+          <table class="table table-bordered table-hover w-100">
+            <thead>
+              <tr>
+                <th>Performed By</th>
+                <th>Action</th>
+                <th>User Agent</th>
+                <th>IP Address</th>
+                <th>Timestamp</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for audit in items %}
+              <tr>
+                <td>{{ audit.performed_by}}</td>
+                <td>{{ audit.action }}</td>
+                <td>{{ audit.user_agent }}</td>
+                <td>{{ audit.ip_address}}</td>
+                <td>{{ audit.timestamp}}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+
+          <nav aria-label="audit table pagination">
+            <ul class="pagination justify-content-start">
+              {% if page > 1 %}
+              <li class="page-item">
+                <a
+                  class="page-link"
+                  href="{{ url_for(url, page=page-1, search1=request.args.get('search1', '')) }}"
+                  >Previous</a
+                >
+              </li>
+              {% endif %} {% for p in range(1, total_pages + 1) %}
+              <li class="page-item {% if p == page %}active{% endif %}">
+                <a
+                  class="page-link"
+                  href="{{ url_for(url, page=p, search1=request.args.get('search1', '')) }}"
+                  >{{ p }}</a
+                >
+              </li>
+              {% endfor %} {% if page < total_pages %}
+              <li class="page-item">
+                <a
+                  class="page-link"
+                  href="{{ url_for(url, page=page+1, search1=request.args.get('search1', '')) }}"
+                  >Next</a
+                >
+              </li>
+              {% endif %}
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

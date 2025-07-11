@@ -1,0 +1,86 @@
+{% extends "base.html" %} {% block style_block %}
+<style>
+  .site-blocks-cover {
+    padding: 60px 0;
+    min-height: auto;
+    height: auto;
+    padding-bottom: 20vh;
+  }
+
+  @media (min-width: 768px) {
+    .site-blocks-cover {
+      padding-bottom: 20vh;
+    }
+  }
+
+  @media (min-width: 1200px) {
+    .site-blocks-cover {
+      padding-bottom: 5vh;
+    }
+  }
+</style>
+{% endblock %} {% block title_block %} Download {% endblock %} {% block
+content_block %}
+
+<div class="particlehead"></div>
+<div class="site-blocks-cover">
+  <div class="container">
+    <div class="row align-items-center justify-content-center text-center">
+      <div class="col-md-12" data-aos="fade-up" data-aos-delay="400">
+        <div class="row justify-content-center mb-4">
+          <div class="col-md-10 text-center">
+            <h3 class="mt-5 mb-4">
+              Download the Augmented Fake News Dataset
+              <span class="typed-words"></span>
+            </h3>
+
+            <p class="lead text-dark">
+              As part of our research titled
+              <strong
+                >"Fake News Classification via Sentiment Analysis using Selected
+                Deep Learning Techniques,"</strong
+              >
+              we have created an augmented dataset tailored to English-language
+              news articles from the Philippine context.
+            </p>
+
+            <p class="lead text-dark">
+              This dataset includes curated and fact-checked fake news articles,
+              supplemented with additional data to address the gap in
+              Philippine-specific resources for fake news detection.
+            </p>
+
+            <p class="lead text-dark">
+              We are making this dataset available to assist future researchers,
+              educators, and developers in furthering studies and innovations in
+              fake news detection, sentiment analysis, and related fields.
+            </p>
+          </div>
+        </div>
+
+        <div class="row justify-content-center">
+          <div class="col-12">
+            <div class="p-3 my-4 bg-light rounded">
+              <strong>Note:</strong> This dataset is provided for academic and
+              research purposes only. Proper acknowledgment of our work in your
+              research or projects would be greatly appreciated.
+            </div>
+          </div>
+        </div>
+
+        <!-- Download Button -->
+        <div class="row justify-content-center">
+          <div class="text-center mt-4">
+            <a
+              href="{{ url_for('main.download_file') }}"
+              class="btn btn-primary btn-lg w-auto"
+              >Download</a
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

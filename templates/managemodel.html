@@ -1,0 +1,280 @@
+{% extends "adminbase1.html" %} {% block style_block %}
+<style>
+  .fade-out {
+    transition: opacity 1s ease-out;
+    opacity: 0;
+  }
+</style>
+{% endblock %} {% block title_block %} Model Management {% endblock %} {% block
+content_block %}
+
+<div class="container mt-5">
+  <div class="row mb-4 align-items-start">
+    <div class="col text-start">
+      <h3>Model Management</h3>
+      <p>
+        Manage and monitor your machine learning models, including training,
+        updating, and deployment, all in one place.
+      </p>
+    </div>
+  </div>
+
+  {% if error %}
+  <div class="row mb-1">
+    <div class="col">
+      <div id="alertBox" class="alert alert-danger text-center">
+        {{ error }}
+      </div>
+    </div>
+  </div>
+  <script>
+    setTimeout(function () {
+      const alertBox = document.getElementById("alertBox");
+      if (alertBox) {
+        alertBox.classList.add("fade-out");
+        setTimeout(() => (alertBox.style.display = "none"), 1000); // wait for fade to finish
+      }
+    }, 3000);
+  </script>
+
+  {% endif %} {% if success %}
+
+  <div class="row mb-1">
+    <div class="col">
+      <div id="alertBoxSuccess" class="alert alert-success text-center">
+        {{ error }}
+      </div>
+    </div>
+  </div>
+
+  <script>
+    setTimeout(function () {
+      const alertBox = document.getElementById("alertBoxSuccess");
+      if (alertBox) {
+        alertBox.classList.add("fade-out");
+        setTimeout(() => (alertBox.style.display = "none"), 1000); // wait for fade to finish
+      }
+    }, 3000);
+  </script>
+
+  {% endif %}
+
+  <form method="GET" action="{{ url_for('main.searcharticle') }}">
+    <!--CHANGE URL-->
+    <div class="row mb-4 align-items-center gx-1 gy-2">
+      <div class="col-4">
+        <input
+          type="text"
+          class="form-control"
+          id="search1"
+          name="search1"
+          value="{{search if search else '' }}"
+          placeholder="Search"
+        />
+      </div>
+
+      <div class="col-auto">
+        <button type="submit" class="btn btn-primary w-100">Search</button>
+      </div>
+
+      <div class="col-auto ms-auto">
+        <form method="GET" action="">
+          <button class="btn btn-primary w-100">Retrain Model</button>
+        </form>
+      </div>
+    </div>
+  </form>
+
+  <div class="bg-white rounded p-2 pt-2 shadow-sm">
+    <div class="row mb-3 h-auto">
+      <div class="col">
+        <div class="table-responsive">
+          <table class="table table-bordered table-hover w-100">
+            <thead>
+              <tr>
+                <th>File Path</th>
+                <th>Trained By</th>
+                <th>Trained At</th>
+                <th>Accuracy</th>
+                <th>Precision</th>
+                <th>Recall</th>
+                <th>F1-Score</th>
+                <th>Active</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for model in items %}
+              <tr>
+                <td>{{ model.file_path }}</td>
+                <td>{{ model.trained_by }}</td>
+                <td>{{ model.trained_at }}</td>
+                <td>{{ model.model_accuracy }}</td>
+                <td>{{ model.model_precision }}</td>
+
+                <td>{{ model.model_recall }}</td>
+                <td>{{ model.model_f1_score }}</td>
+
+                <td>
+                  <form
+                    method="POST"
+                    action="{{ url_for('main.togglemodel') }}"
+                  >
+                    <input
+                      type="hidden"
+                      name="model_id"
+                      value="{{ model.model_id }}"
+                    />
+
+                    <label class="switch">
+                      <input
+                        type="checkbox"
+                        name="is_active"
+                        value="1"
+                        {%
+                        if
+                        model.is_active
+                        %}checked{%
+                        endif
+                        %}
+                        onchange="handleModelToggle(this)"
+                      />
+                      <span class="slider round"></span>
+                    </label>
+                  </form>
+                </td>
+
+                <script>
+                  function handleModelToggle(checkbox) {
+                    if (checkbox.checked) {
+                      checkbox.form.submit();
+                    } else {
+                      checkbox.checked = true;
+                    }
+                  }
+                </script>
+
+                <style>
+                  .switch {
+                    position: relative;
+                    display: inline-block;
+                    width: 60px;
+                    height: 34px;
+                  }
+
+                  .switch input {
+                    opacity: 0;
+                    width: 0;
+                    height: 0;
+                  }
+
+                  .slider {
+                    position: absolute;
+                    cursor: pointer;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background-color: #ccc;
+                    -webkit-transition: 0.4s;
+                    transition: 0.4s;
+                  }
+
+                  .slider:before {
+                    position: absolute;
+                    content: "";
+                    height: 26px;
+                    width: 26px;
+                    left: 4px;
+                    bottom: 4px;
+                    background-color: white;
+                    -webkit-transition: 0.4s;
+                    transition: 0.4s;
+                  }
+
+                  input:checked + .slider {
+                    background-color: #21325e;
+                  }
+
+                  input:focus + .slider {
+                    box-shadow: 0 0 1px #21325e;
+                  }
+
+                  input:checked + .slider:before {
+                    -webkit-transform: translateX(26px);
+                    -ms-transform: translateX(26px);
+                    transform: translateX(26px);
+                  }
+
+                  .slider.round {
+                    border-radius: 34px;
+                  }
+
+                  .slider.round:before {
+                    border-radius: 50%;
+                  }
+                </style>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+
+          <nav aria-label="model table pagination">
+            <ul class="pagination justify-content-start">
+              {% if page > 1 %}
+              <li class="page-item">
+                <a
+                  class="page-link"
+                  href="{{ url_for(url, page=page-1, search1=request.args.get('search1', '')) }}"
+                  >Previous</a
+                >
+              </li>
+              {% endif %} {% for p in range(1, total_pages + 1) %}
+              <li class="page-item {% if p == page %}active{% endif %}">
+                <a
+                  class="page-link"
+                  href="{{ url_for(url, page=p, search1=request.args.get('search1', '')) }}"
+                  >{{ p }}</a
+                >
+              </li>
+              {% endfor %} {% if page < total_pages %}
+              <li class="page-item">
+                <a
+                  class="page-link"
+                  href="{{ url_for(url, page=page+1, search1=request.args.get('search1', '')) }}"
+                  >Next</a
+                >
+              </li>
+              {% endif %}
+            </ul>
+          </nav>
+
+          <!--
+          <nav aria-label="User table pagination">
+            <ul class="pagination justify-content-start">
+              {% if page > 1 %}
+              <li class="page-item">
+                <a class="page-link" href="{{ url_for(url, page=page-1) }}"
+                  >Previous</a
+                >
+              </li>
+              {% endif %} {% for p in range(1, total_pages + 1) %}
+              <li class="page-item {% if p == page %}active{% endif %}">
+                <a class="page-link" href="{{ url_for(url, page=p) }}"
+                  >{{ p }}</a
+                >
+              </li>
+              {% endfor %} {% if page < total_pages %}
+              <li class="page-item">
+                <a class="page-link" href="{{ url_for(url, page=page+1) }}"
+                  >Next</a
+                >
+              </li>
+              {% endif %}
+            </ul>
+          </nav>-->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

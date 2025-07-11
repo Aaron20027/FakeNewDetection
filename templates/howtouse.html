@@ -1,0 +1,54 @@
+{% extends "base.html" %} {% block style_block %}
+<style>
+  .site-blocks-cover {
+    padding: 60px 0;
+    min-height: auto;
+    height: auto;
+    padding-bottom: 20vh;
+  }
+
+  @media (min-width: 768px) {
+    .site-blocks-cover {
+      padding-bottom: 20vh;
+    }
+  }
+
+  @media (min-width: 1200px) {
+    .site-blocks-cover {
+      padding-bottom: 5vh;
+    }
+  }
+</style>
+{% endblock %} {% block title_block %} How To Use {% endblock %} {% block
+content_block %}
+
+<div class="particlehead"></div>
+<div class="site-blocks-cover">
+  <div class="container pt-5">
+    <div class="row text-center mt-1">
+      <div class="col-md-12" data-aos="fade-up" data-aos-delay="400">
+        <h2 class="mb-4">
+          How To Use <span class="typed-words"></span>
+        </h2>
+
+         <p>Our tool helps you predict whether a piece of news is real or fake based on the text you provide. It uses advanced deep learning to evaluate patterns, tone, and content in your submission.</p>
+           
+         <h3 class="mt-5">Steps to Use the Model:</h3>
+
+       <p class="mt-4">1. Navigate to the Home Page.</p>
+<p>2.Copy & Paste the article you want to analyze into the text field, or click the icon at the bottom right of the text field to open the Extract Text dialog. This allows you to paste a URL and automatically extract the article’s content.</p>
+<p>3. Click the <strong>Generate</strong> button to run the prediction model.</p>
+<p>4. Wait for the system to display the prediction results based on your input.</p>
+
+<div class="mt-5"><a href="{{ url_for('main.main_page') }}#model-section" class="btn btn-primary btn-md">Go to Model</a></div>
+
+        
+        </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

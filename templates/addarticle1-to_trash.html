@@ -1,0 +1,95 @@
+{% extends "adminbase1.html" %} {% block style_block %} {% endblock %} {% block
+title_block %} Add Article {% endblock %} {% block content_block %}
+
+<div class="container" style="max-width: 600px; margin: 50px auto">
+  <h2 class="text-center mb-4">Add Fact-Checked Article</h2>
+  <form action="/add_article" method="post">
+    <div class="mb-3">
+      <label for="title" class="form-label">Title</label>
+      <input
+        type="text"
+        class="form-control"
+        id="title"
+        name="title"
+        required
+      />
+    </div>
+    <div class="mb-3">
+      <label for="link" class="form-label" placeholder="http://www.example.com"
+        >Article Link</label
+      >
+      <input type="url" class="form-control" id="link" name="link" required />
+    </div>
+    <div class="mb-3">
+      <label for="description" class="form-label">Description</label>
+      <textarea
+        class="form-control"
+        id="description"
+        name="description"
+        rows="3"
+        required
+      ></textarea>
+    </div>
+    <div class="mb-3">
+      <label for="date" class="form-label">Date</label>
+      <input type="date" class="form-control" id="date" name="date" required />
+    </div>
+    <button type="submit" class="btn btn-primary w-100">Add Article</button>
+  </form>
+</div>
+<!-- Flash Message Modal -->
+<div
+  class="modal fade"
+  id="flashModal"
+  tabindex="-1"
+  aria-labelledby="flashModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="flashModalLabel">Notification</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p id="flashMessage"></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.getElementById("link").addEventListener("blur", function () {
+    let url = this.value.trim();
+    if (url && !url.startsWith("http://") && !url.startsWith("https://")) {
+      this.value = "http://" + url;
+    }
+  });
+
+  document.addEventListener("DOMContentLoaded", function () {
+    var flashMessage =
+      "{{ get_flashed_messages(with_categories=false) | join(' ') }}";
+
+    if (flashMessage) {
+      document.getElementById("flashMessage").textContent = flashMessage;
+      var flashModal = new bootstrap.Modal(
+        document.getElementById("flashModal")
+      );
+      flashModal.show();
+
+      // Auto-hide the modal after 3 seconds
+      setTimeout(function () {
+        flashModal.hide();
+      }, 3000);
+    }
+  });
+</script>
+
+{% endblock %}

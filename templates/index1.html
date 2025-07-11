@@ -1,0 +1,897 @@
+{% extends "base.html" %}
+
+{% block title_block %}
+
+{% endblock %}
+
+{% block style_block %}
+
+
+<!-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> -->
+
+<style>
+  #scrollBtn {
+    position: fixed;
+    bottom: 5vh;
+    right: 5vw;
+    z-index: 1000;
+
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    padding: 0;
+
+    display: none;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .carousel-control-prev-icon {
+    transform: rotate(90deg);
+    width: 15px;
+    height: 15px;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+</style>
+
+<style>
+  .modal-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .modal-content {
+    background-color: transparent;
+    border: none;
+    box-shadow: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .modal-inner-box {
+    background-color: white;
+    border-radius: 0.5rem;
+ 
+    width: 100%;
+    max-width: auto;
+    margin-bottom: 1rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  .modal-footer-fake {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+</style>
+
+<style>
+ /* CSS */
+.tooltip-container {
+  position: relative;
+  display: block; /* or inline-block if needed */
+  width: 100%;
+}
+
+.tooltiptext {
+  visibility: hidden;
+  width: 250px;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  padding: 6px;
+  border-radius: 6px;
+
+  position: absolute;
+  top: -100px; /* adjust to appear above */
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.tooltip-container:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+}
+
+.tooltiptext::after {
+  content: "";
+  position: absolute;
+  top: 100%; /* arrow points down */
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+
+</style>
+
+
+
+
+<style>
+  .chart-container {
+    width: 80%;
+    max-width: 500px;
+    margin: 20px auto;
+  }
+</style>
+
+
+
+
+{% endblock %}
+
+{% block content_block %}
+
+<!-- <div class="g-recaptcha" data-sitekey="6Le1oOQqAAAAAIu9xplbxiDnOOUZXpFHBTWj6rNg"></div> -->
+
+
+<button id="scrollBtn" class="btn btn-primary btn-lg">
+  <span class="carousel-control-prev-icon"></span>
+</button>
+
+<script>
+
+  const btn = document.querySelector("#scrollBtn");
+
+
+  window.addEventListener("scroll", () => {
+    if (document.documentElement.scrollTop > 200) {
+      btn.style.display = "block";
+    } else {
+      btn.style.display = "none";
+    }
+  });
+
+  btn.addEventListener("click", () => {
+    document.documentElement.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  });
+</script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js">
+</script>
+
+
+
+
+<div class="particlehead"></div>
+<!-- <div class="container"> -->
+<div class="site-blocks-cover">
+  <div class="container">
+    <div class="row align-items-center justify-content-center text-center">
+
+      <div class="col-md-12" data-aos="fade-up" data-aos-delay="400">
+
+        <div class="row justify-content-center mb-4">
+          <div class="col-md-10 text-center">
+            <h1>Fake News Detection: <span class="typed-words"></span></h1>
+            <p class="lead mb-5">It's time to combat misinformation</p>
+            <div><a href="#model-section" class="btn btn-primary btn-md">Go</a></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="site-section" id="model-section">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-8 text-center">
+        <form id="newsForm">
+          <h2 class="site-section-heading text-center">FAKE NEWS DETECTION</h2>
+          <p class="lead">Enter the content of your chosen news article to assess its legitimacy</p>
+
+
+          
+          <div class="position-relative mb-3">
+            <textarea id="textInput" name="TEXT" class="form-control"
+              placeholder="Paste your news article text here..." rows="6" minlength="40" required></textarea>
+          
+            <a href="#" id="clearText" class="position-absolute text-dark"
+               style="bottom: 10px; right: 15px; font-size: 1.3rem;">
+              <i class="bi bi-trash-fill"></i>
+            </a>
+          </div>
+
+          <script>
+            document.getElementById("clearText").addEventListener("click", function(e) {
+              e.preventDefault();
+              document.getElementById("textInput").value = "";
+              document.getElementById("newsForm").reset();
+            });
+          </script>
+          
+          <!-- 
+          <div class="position-relative mb-3" style="width: 100%;">
+            <textarea id="textInput" name="TEXT" class="form-control"
+              placeholder="Paste your news article text here..." rows="6"></textarea>
+          
+            <div class="d-flex align-items-center mt-0">
+              <div class="me-auto">
+              </div>
+  
+              <div class="mx-auto">
+                <button type="submit" class="btn btn-primary btn-md mt-2">Generate</button>
+              </div>
+
+              <div class="ms-auto mt-2">
+                <a href="#" id="clearText" class="text-dark mt-1" style="font-size: 1.3rem;">
+                  <i class="bi bi-trash-fill"></i>
+                </a>
+              </div>
+            </div>
+          </div>-->
+
+          <!-- Text Input Box 
+          <textarea id="textInput" name="TEXT" class="form-control mb-3"
+            placeholder="Paste your news article text here..." rows="6"></textarea>
+
+        
+
+          <a
+            href="#"
+            class="text-decoration-none text-dark me-2 "
+            style="font-size: 1.3rem"
+          >
+            <i class="bi bi-trash-fill fs-4" style="font-size: 1.3rem"></i>
+          </a>-->
+
+        
+          <button type="submit" class="btn btn-primary btn-md">Generate</button>
+
+          <a id="urlSearch"
+            class="position-absolute text-dark"
+            style="bottom: 20px; right: 15px; font-size: 1.6rem;"
+            data-bs-toggle="modal"
+            data-bs-target="#exampleModal">
+            <i class="bi bi-window-plus"></i>
+          </a>
+
+
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Modal Structure -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      
+      <div class="modal-inner-box">
+        <div class="modal-body">
+          <input type="text" class="form-control rounded-pill" name="article_url" id="article_url" placeholder="Enter Article URL" style="height: 60px;">
+        </div>
+      </div>
+
+      <div class="modal-footer-fake">
+        <button type="submit" class="btn btn-primary btn-md" id="urlSubmit">Extract</button>
+      </div>
+   
+
+    </div>
+  </div>
+</div>
+
+  <script>
+    
+  const exampleModal = document.getElementById('exampleModal');
+  exampleModal.addEventListener('show.bs.modal', function () {
+    const input = exampleModal.querySelector('input');
+    if (input) input.value = '';
+  });
+</script>
+
+
+
+
+<section class="site-section" id="result-section" style="display: none;">
+  <div class="container">
+
+  <div class="row mb-3 align-items-start">
+    <div class="col text-start">
+        <h2 class="mb-0">Analysis Results</h2>
+      <p>Explore the insights and sentiment behind the news to better understand its authenticity and impact.</p>
+    </div>
+  </div>
+
+
+    
+   
+      
+        <div class="row bg-white align-items-stretch p-4 mb-3">
+
+  <!-- Prediction Result Column -->
+  <div class="col-md-6 d-flex flex-column">
+    <h4 class="mb-4">Prediction Result</h4>
+
+    <div class="tooltip-container text-center mb-4">
+      <div class="chart-container mb-4">
+        <canvas id="myDoughnutChart" class="mb-4 w-auto"></canvas>
+      </div>
+
+      <div class="tooltiptext">
+   Confidence score: Represents the model’s certainty in classifying the article as either fake or real.
+  </div>
+    </div>
+
+   
+
+    <div class="text-center">
+      <h3 id="resultText" class="mb-3">This news is real.</h3>
+      <h6 class="ml-4 mr-4">Stay informed and continue checking reliable sources for accuracy.</h6>
+    </div>
+  </div>
+
+  <!-- Sentiment Analysis Column -->
+  <div class="col-md-6 d-flex flex-column">
+    <h4 class="mb-4">Sentiment Analysis</h4>
+    <div class="text-start mb-5">
+      <h6 class="text-black">Positive</h6>
+  
+
+      <div class="tooltip-container mb-4">
+  <div class="progress">
+    <div 
+      class="progress-bar bg-success" 
+      id="progress-positive" 
+      style="width: 70%; ">
+      70%
+    </div>
+  </div>
+  <div class="tooltiptext">
+   Positive sentiment: Represents the percentage of positive words or tone in the text.
+  </div>
+</div>
+
+
+      <h6 class="text-black">Neutral</h6>
+
+<div class="tooltip-container mb-4">
+  <div class="progress">
+    <div 
+      class="progress-bar bg-warning" 
+      id="progress-neutral" 
+      style="width: 50%;">
+      50%
+    </div>
+  </div>
+  <div class="tooltiptext">
+    Neutral sentiment: Represents the percentage of neutral or objective content.
+  </div>
+</div>
+
+<h6 class="text-black">Negative</h6>
+<div class="tooltip-container mb-4">
+  <div class="progress">
+    <div 
+      class="progress-bar bg-danger" 
+      id="progress-negative" 
+      style="width: 30%;">
+      30%
+    </div>
+  </div>
+  <div class="tooltiptext">
+    Negative sentiment: Represents the percentage of negative words or tone in the text.
+  </div>
+</div>
+
+
+
+    </div>
+
+    <h5 class="mb-5" style="text-align: center;" id="desc-para">This article has been classified as Fake, with a confidence of 87.3%.
+The sentiment analysis shows the content is mostly neutral, with some positive and negative elements.</h5>
+
+    <p style="text-align: center;"><i>Disclaimer: This result was predicted by a model and is not definitive—always verify through trusted sources and do not substitute it for professional judgment.</i></p>
+
+  </div>
+
+
+    
+    </div>
+    <div class="row d-flex justify-content-center">
+      <button type="submit" id="retryText" class="btn btn-primary btn-md">Retry New Article</button>
+    </div>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    document.getElementById("retryText").addEventListener("click", function (e) {
+      e.preventDefault();
+      document.getElementById("textInput").value = "";
+      document.getElementById("newsForm").reset();
+
+      $('#result-section').fadeOut(500, function () {
+        $('html, body').animate({
+          scrollTop: $('#model-section').offset().top
+        }, 600);
+      });
+    });
+  });
+</script>
+</section>
+
+ 
+
+
+</section>
+
+<script>
+
+  $('#urlSubmit').on('click', function () {
+  let url = $('#article_url').val(); 
+  console.log("Extracted URL:", url);
+
+  // Clear textarea first
+  $('#textInput').val("");
+
+
+      document.getElementById("newsForm").reset();
+
+      $('#result-section').fadeOut(500, function () {
+        $('html, body').animate({
+          scrollTop: $('#model-section').offset().top
+        }, 600);
+      });
+
+  $.ajax({
+    type: 'POST',
+    url: '/extract_text',
+    data: { article_url: url },
+    contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+    success: function (response) {
+      
+
+    let content = response.content || "";
+
+    const disclaimer = "This is AI generated summarization, which may have errors. For context, always refer to the full article.";
+
+    if (content.startsWith(disclaimer)) {
+      content = content.slice(disclaimer.length).trim();
+    }
+
+      // Set values into form fields
+      $('#newsTitle').val(response.headline);
+      $('#newsContent').val(response.content);
+      $('#textInput').val(content); // ✅ This is your textarea
+
+      // Optional: Close modal after inserting
+      $('#exampleModal').modal('hide');
+    },
+    error: function (xhr) {
+      alert('Failed to extract text from URL! ');
+    }
+  });
+});
+
+
+  // Handle form submission with AJAX
+  $('#newsForm').on('submit', function (event) {
+    event.preventDefault();  // Prevent default form submission
+
+  
+    var formData = $(this).serialize();  // Serialize form data
+
+    $.ajax({
+      url: '/prediction',  // Flask route for prediction
+      type: 'POST',
+      data: formData,
+      success: function (response) {
+        // $('#result-section').show();
+        // Show the result section
+        $('#result-section').fadeIn();
+
+        // Scroll to result section smoothly
+        $('html, body').animate({
+          scrollTop: $('#result-section').offset().top
+        }, 800); // Adjust duration (800ms) for smooth scrolling
+
+        // Ensure probability is a number
+        let probability = parseFloat(response.probability) || 0;
+        let remaining = 100 - probability;
+
+        // Extract sentiment data
+        let neg = parseFloat(response.sentiment.negative);
+        let neu = parseFloat(response.sentiment.neutral);
+        let pos = parseFloat(response.sentiment.positive);
+        let compound = parseFloat(response.sentiment.compound_score);
+
+        // Determine overall sentiment based on compound score
+        let overallSentiment = "Neutral";  // Default
+        if (compound >= 0.05) {
+          overallSentiment = "Positive";
+        } else if (compound <= -0.05) {
+          overallSentiment = "Negative";
+        }
+
+        // Update result text
+        // $('#outputSection').show();
+        // $('#outputText').html(`
+        //     <b>Probability rating:</b> ${probability}%<br>
+        //     <b>Description:</b> ${response.description}<br><br>
+        //     <b>Sentiment Analysis:</b><br>
+        //     🔴 Negative: ${neg}%<br>
+        //     🟡 Neutral: ${neu}%<br>
+        //     🟢 Positive: ${pos}%<br>
+        //     📊 Compound Score: ${compound}
+        // `);
+
+        // Update progress bars
+        $('#progress-positive').css('width', pos + '%').attr('aria-valuenow', pos).text(pos + '%');
+        $('#progress-neutral').css('width', neu + '%').attr('aria-valuenow', neu).text(neu + '%');
+        $('#progress-negative').css('width', neg + '%').attr('aria-valuenow', neg).text(neg + '%');
+
+        
+        $('#desc-para').text(response.shortDescription);
+
+
+
+        // Update overall sentiment text
+        $('h2.mb-4').text(overallSentiment);
+        $('#resultText').text("This news is " + response.description);
+        // Update chart data (Fake news probability vs Remaining)
+
+        let prediction = response.description;
+        myDoughnutChart.data.datasets[0].data = [probability, remaining,prediction];
+
+        if (prediction === 'Real') {
+          myDoughnutChart.data.datasets[0].backgroundColor[0] = '#8BC348'; // green
+        } else if (prediction === 'Fake') {
+          myDoughnutChart.data.datasets[0].backgroundColor[0] = '#F23A2E'; // red
+        } else {
+          myDoughnutChart.data.datasets[0].backgroundColor[0] = '#C0C0C0'; // default
+        }
+
+        // Force a re-render
+        myDoughnutChart.update();
+      },
+      error: function (xhr, status, error) {
+        console.log('Error:', error);
+        $('#outputSection').show();
+        $('#outputText').html('An error occurred. Please try again.');
+      }
+    });
+
+    //document.getElementById("newsForm").reset();
+  });
+
+
+  const ctx = document.getElementById('myDoughnutChart').getContext('2d');
+
+
+  const myDoughnutChart = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: ['Fake Probability', 'Remaining'],
+      datasets: [{
+        data: [0, 100],  // Initial values
+        backgroundColor: ['#4CAF50', '#C0C0C0'],
+        borderWidth: 0
+      }]
+    },
+    options: {
+      responsive: false,
+      maintainAspectRatio: false,
+      cutout: '85%',
+      plugins: {
+        legend: { display: false }
+      }
+    },
+    plugins: [{
+      id: 'centerText',
+      beforeDraw: function (chart) {
+        const width = chart.width,
+          height = chart.height,
+          ctx = chart.ctx;
+
+        ctx.restore();
+        ctx.font = "50px Inter";
+        ctx.textBaseline = "middle";
+        ctx.textAlign = "center";
+
+        const text = `${chart.data.datasets[0].data[0]}%`;
+        const textX = Math.round(width / 2);
+        const textY = Math.round(height / 2);
+
+        ctx.clearRect(0, 0, width, height);
+        ctx.fillText(text, textX, textY);
+        ctx.save();
+      }
+    }]
+  });
+
+  
+</script>
+
+
+<style>
+.chart-container {
+  width: 400px;
+  height: 400px;
+  margin: 0 auto;
+  position: relative;
+}
+
+#myDoughnutChart {
+  width: 400px !important;
+  height: 400px !important;
+}
+</style>
+
+
+
+
+
+
+
+
+
+
+<section class="section ft-feature-1">
+  <div class="container">
+    <div class="row align-items-stretch">
+      <div class="col-12 w-100 ft-feature-1-content">
+        <div class="row align-items-center">
+          <div class="col-lg-5">
+
+            <img src="{{ url_for('static', filename='images/img_13.jpg') }}" alt="Image" class="img-fluid mb-4 mb-lg-0">
+
+          </div>
+          <div class="col-lg-3 ml-auto">
+            <div class="mb-5">
+              <h3 class="d-flex align-items-center"><span class="icon icon-question_answer mr-2"></span><span>Sentiment
+                  Analysis</span></h3>
+              <p>This model uses sentiment analysis to detect emotional cues in text.</p>
+              <p><a href="https://www.geeksforgeeks.org/what-is-sentiment-analysis/">Read More</a></p>
+            </div>
+            <div>
+              <h3 class="d-flex align-items-center"><span class="icon icon-question_answer mr-2"></span><span>Emotional
+                  Tone in News</span></h3>
+              <p>This model can detect emotional tone which is more commonly used in fake news</p>
+              <p><a
+                  href="https://mediacentral.princeton.edu/media/Emotional+Manipulation+in+the+Era+of+MisinformationA+Investigating+the+Interplay+of+Emotions%2C+Fake+News%2C+and+Social+Media+Algorithms%2C+Anjali+Kapoor%2C+UG+%2724+%28EB8536AD%29/1_spt6inta">Read
+                  More</a></p>
+            </div>
+          </div>
+          <div class="col-lg-3">
+            <div class="mb-5">
+              <h3 class="d-flex align-items-center"><span class="icon icon-question_answer mr-2"></span><span>Fake News
+                  in the Philippines</span></h3>
+              <p>This model aims to help Filipinos who struggle with fake news.</p>
+              <p><a
+                  href="https://newsinfo.inquirer.net/1678248/fake-news-a-problem-in-ph-9-in-10-filipinos-agree-says-pulse-asia">Read
+                  More</a></p>
+            </div>
+            <div>
+              <h3 class="d-flex align-items-center"><span class="icon icon-question_answer mr-2"></span><span>Model
+                  Accuracy</span></h3>
+              <p>This model can predict fake news very well with a test accuracy of 95% </p>
+              <p><a href="https://www.sciencedirect.com/topics/computer-science/model-accuracy">Read More</a></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="site-section" id="fake-section">
+  <div class="container mb-5">
+    <div class="row justify-content-center">
+      <div class="col-md-8 text-center">
+        <h2 class="site-section-heading text-center">FAKE NEWS IN THE PHILIPPINES</h2>
+      </div>
+    </div>
+  </div>
+  <div class="slide-one-item home-slider owl-carousel">
+    <div>
+      <div class="testimonial">
+
+        <blockquote class="mb-5">
+          <p>&ldquo;Overall trust in the news among Filipinos (38%) has held steady since last year but lags behind the
+            global average (40%) and remains the lowest among the five Southeast Asian media markets covered in the
+            annual study. Filipinos under 35, in fact, are more likely to disagree that they can trust news most of the
+            time.&rdquo;</p>
+        </blockquote>
+
+        <figure class="mb-4 d-block align-items-center justify-content-center">
+          <div><img src="{{ url_for('static', filename='images/person_3.jpg') }}" alt="Image"
+              class="w-50 img-fluid mb-3"></div>
+          <p>Yvonne T. Chua</p>
+        </figure>
+      </div>
+    </div>
+    <div>
+      <div class="testimonial">
+
+        <blockquote class="mb-5">
+          <p>&ldquo; the proportion of Filipinos who say they trust news from social media fell from 22% to 20% from a
+            year ago but those who trust “most news most of the time” rose from 27% to 32%. Trust in news among
+            Filipinos is still below the global average of 44%, and is sixth to the last in the said metric. &rdquo;</p>
+        </blockquote>
+        <figure class="mb-4 d-block align-items-center justify-content-center">
+          <div><img src="{{ url_for('static', filename='images/person_2.jpg') }}" alt="Image"
+              class="w-50 img-fluid mb-3"></div>
+          <p>Gelo Gonzales</p>
+        </figure>
+
+      </div>
+    </div>
+
+    <div>
+      <div class="testimonial">
+
+        <blockquote class="mb-5">
+          <p>&ldquo;A new Pulse Asia survey revealed that about 9 in 10 Filipino adults, or 86 percent, see the
+            proliferation of “fake news” as a problem in the country. Only 14 percent of respondents across the country
+            do not regard fake news as an issue.&rdquo;</p>
+        </blockquote>
+        <figure class="mb-4 d-block align-items-center justify-content-center">
+          <div><img src="{{ url_for('static', filename='images/person_4.jpg') }}" alt="Image"
+              class="w-50 img-fluid mb-3"></div>
+          <p>Gabriel P. Lalu</p>
+        </figure>
+
+
+      </div>
+    </div>
+
+    <div>
+      <div class="testimonial">
+
+        <blockquote class="mb-5">
+          <p>&ldquo;Fifty-one percent of the 1,440 Filipino adults surveyed from Dec. 12-16, 2021 said it was difficult
+            for them to know if a piece of news or information from TV, radio, or social media was fake or wrong, while
+            48% considered it easy.&rdquo;</p>
+        </blockquote>
+        <figure class="mb-4 d-block align-items-center justify-content-center">
+          <div><img src="{{ url_for('static', filename='images/person_5.jpg') }}" alt="Image"
+              class="w-50 img-fluid mb-3"></div>
+          <p>Bruce Rogers</p>
+        </figure>
+
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+
+
+
+
+
+<section class="site-section" id="contact-section">
+  <div class="container">
+    <div class="row mb-5">
+      <div class="col-12 text-center">
+        <h2 class="site-section-heading">Contact Us</h2>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12 mb-5">
+
+        <form method="post" id="contact-form" action="/contact" class="p-5 bg-white">
+          <h2 class="h4 mb-5">Contact Form</h2>
+
+          <div class="row form-group">
+            <div class="col-md-6 mb-3 mb-md-0">
+              <label class="text-black" for="fname">First Name</label>
+              <input type="text" id="fname" name="fname" class="form-control" required>
+            </div>
+            <div class="col-md-6">
+              <label class="text-black" for="lname">Last Name</label>
+              <input type="text" id="lname" name="lname" class="form-control">
+            </div>
+          </div>
+
+          <div class="row form-group">
+            <div class="col-md-12">
+              <label class="text-black" for="email">Email</label>
+              <input type="email" id="email" name="email" class="form-control" required>
+            </div>
+          </div>
+
+          <div class="row form-group">
+            <div class="col-md-12">
+              <label class="text-black" for="subject">Subject</label>
+              <input type="text" id="subject" name="subject" class="form-control" required>
+            </div>
+          </div>
+
+          <div class="row form-group">
+            <div class="col-md-12">
+              <label class="text-black" for="message">Message</label>
+              <textarea name="message" id="message" cols="30" rows="7" class="form-control"
+                placeholder="Write your notes or questions here..." required></textarea>
+              <small id="message-error" style="color: red; display: none;">Message is required.</small>
+            </div>
+          </div>
+
+          <div class="row form-group">
+            <div class="col-md-12">
+              <button type="submit" class="btn btn-primary btn-md text-white g-recaptcha">Send Message</button>
+            </div>
+          </div>
+        </form>
+
+        <!-- Flash Message Modal -->
+        <div class="modal fade" id="flashModal" tabindex="-1" aria-labelledby="flashModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="flashModalLabel">Notification</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <p id="flashMessage"></p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <script>
+          document.getElementById("contact-form").addEventListener("submit", function (event) {
+            var messageField = document.getElementById("message");
+            var messageError = document.getElementById("message-error");
+
+            if (messageField.value.trim() === "") {
+              messageField.style.border = "2px solid red"; // Highlight red
+              messageError.style.display = "block"; // Show error text
+              event.preventDefault(); // Prevent form submission
+            } else {
+              messageField.style.border = ""; // Remove red border if fixed
+              messageError.style.display = "none"; // Hide error text
+            }
+
+          });
+
+          document.addEventListener("DOMContentLoaded", function () {
+            var flashMessage = "{{ get_flashed_messages(with_categories=false) | join(' ') }}";
+
+            if (flashMessage) {
+              document.getElementById("flashMessage").textContent = flashMessage;
+              var flashModal = new bootstrap.Modal(document.getElementById("flashModal"));
+              flashModal.show();
+
+              // Auto-hide the modal after 3 seconds
+              setTimeout(function () {
+                flashModal.hide();
+              }, 3000);
+            }
+          });
+        </script>
+
+        </script>
+
+        <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+        <script type="text/javascript">
+          (function () {
+            emailjs.init({
+              publicKey: "fRoE6WFvZrFlAK6vH",
+            });
+          })();
+        </script>
+        <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+</section>
+
+
+{% endblock %}

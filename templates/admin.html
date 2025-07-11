@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta name="author" content="Untree.co" />
+    <link
+      rel="shortcut icon"
+      href="{{ url_for('static', filename='newspaper.png') }}"
+    />
+
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+
+    <link
+      href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700,900"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='fonts/icomoon/style.css') }}"
+    />
+
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/bootstrap.min.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/jquery-ui.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/owl.carousel.min.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/owl.theme.default.min.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/owl.theme.default.min.css') }}"
+    />
+
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/jquery.fancybox.min.css') }}"
+    />
+
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/bootstrap-datepicker.css') }}"
+    />
+
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='fonts/flaticon/font/flaticon.css') }}"
+    />
+
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/aos.css') }}"
+    />
+
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}"
+    />
+
+    <style>
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh; /* Full viewport height */
+        margin: 0;
+        background-color: #e0e0e0;
+        position: relative; /* Positioning context for the background */
+      }
+
+      .login-container {
+        width: 100%;
+        max-width: 400px; /* Set max width for the login box */
+        padding: 30px;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        position: relative;
+        z-index: 1; /* Makes sure the login box is in front */
+      }
+
+      .form-control {
+        margin-bottom: 15px;
+      }
+
+      button {
+        margin-top: 20px;
+      }
+
+      .home-link {
+        display: block;
+        text-align: center;
+        margin-top: 15px;
+        font-size: 14px;
+      }
+
+      .home-link a {
+        color: #007bff;
+        text-decoration: none;
+      }
+
+      .home-link a:hover {
+        text-decoration: underline;
+      }
+    </style>
+
+    <title>Login</title>
+  </head>
+  <body>
+    <!--
+    <div class="particlehead"></div>-->
+    <!-- Particle background element -->
+    <div class="login-container">
+      <h1 class="text-center mb-4">Login</h1>
+
+      <!-- NEED: database for login -->
+
+      {% if error %}
+      <div id="alertBox" class="alert alert-danger text-center">
+        {{ error }}
+      </div>
+
+      <style>
+        .fade-out {
+          transition: opacity 1s ease-out;
+          opacity: 0;
+        }
+      </style>
+
+      <script>
+        setTimeout(function () {
+          const alertBox = document.getElementById("alertBox");
+          if (alertBox) {
+            alertBox.classList.add("fade-out");
+            setTimeout(() => (alertBox.style.display = "none"), 1000); // wait for fade to finish
+          }
+        }, 3000);
+      </script>
+      {% endif %}
+      <form action="{{ url_for('main.login')}}" method="post">
+        <div class="mb-3">
+          <label for="username" class="form-label">Username</label>
+          <input
+            type="text"
+            class="form-control"
+            id="username"
+            name="username"
+            placeholder="Enter your username"
+            required
+          />
+        </div>
+        <div class="mb-3">
+          <label for="password" class="form-label">Password</label>
+          <input
+            type="password"
+            class="form-control"
+            id="password"
+            name="password"
+            placeholder="Enter your password"
+            required
+          />
+        </div>
+        <button type="submit" class="btn btn-primary w-100">Login</button>
+      </form>
+
+      <!-- Home link below the login button -->
+      <div class="home-link">
+        <a href="{{ url_for('main.main_page')}}">Back</a>
+      </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/jquery-3.3.1.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery-migrate-3.0.1.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='}js/jquery-ui.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/popper.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/owl.carousel.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery.stellar.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery.countdown.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap-datepicker.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery.easing.1.3.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/aos.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery.fancybox.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jarallax.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jarallax-element.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/lozad.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/modernizr.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/three.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/TweenMax.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/OBJLoader.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/ParticleHead.js') }}"></script>
+    <!-- Your particle effect script -->
+
+    <script src="{{ url_for('static', filename='js/jquery.sticky.js') }}"></script>
+
+    <script src="{{ url_for('static', filename='js/typed.js') }}"></script>
+
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+  </body>
+</html>

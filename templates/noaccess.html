@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Access Denied</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='styles.css') }}"
+    />
+    <style>
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #e5e5e5;
+        font-family: Arial, sans-serif;
+      }
+      .container {
+        text-align: center;
+        background: white;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+      h2 {
+        color: #de2f41;
+      }
+      .btn {
+        display: inline-block;
+        margin-top: 15px;
+        padding: 10px 20px;
+        background-color: #21325e;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+      }
+      .btn:hover {
+        background-color: #21325e;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>Access Denied 🚫</h2>
+      <p>You do not have permission to access this page.</p>
+      <a href="{{ url_for('main.main_page') }}" class="btn">Go Back to Home</a>
+    </div>
+  </body>
+</html>

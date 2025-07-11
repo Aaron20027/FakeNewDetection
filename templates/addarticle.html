@@ -1,0 +1,306 @@
+{% extends "adminbase1.html" %} {% block style_block %}
+<style>
+  .fade-out {
+    transition: opacity 1s ease-out;
+    opacity: 0;
+  }
+
+
+
+</style>
+
+<style>
+  .modal-body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .modal-content {
+    background-color: transparent;
+    border: none;
+    box-shadow: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .modal-inner-box {
+    background-color: white;
+    border-radius: 0.5rem;
+ 
+    width: 100%;
+    max-width: auto;
+    margin-bottom: 1rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  .modal-footer-fake {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .dimmed {
+    filter: brightness(0.6); /* or use opacity: 0.5; */
+    transition: filter 0.3s ease;
+  }
+</style>
+
+{% endblock %} {% block title_block %} Add Article {% endblock %} {% block
+content_block %}
+          <!-- Modal Structure -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      
+      <div class="modal-inner-box">
+        <div class="modal-body">
+          <input type="text" class="form-control rounded-pill" name="article_url" id="article_url" placeholder="Enter Article URL" style="height: 60px;">
+        </div>
+      </div>
+
+      <div class="modal-footer-fake">
+        <button type="button" class="btn btn-primary btn-md" id="urlSubmit">Extract</button>
+      </div>
+   
+
+    </div>
+  </div>
+</div>
+<script src="{{ url_for('static', filename='js/jquery-3.3.1.min.js') }}"></script>
+
+
+  <script>
+
+    const modal = document.getElementById('exampleModal');
+
+modal.addEventListener('show.bs.modal', function () {
+  document.querySelector('.bg-white.rounded.p-4.shadow-sm')?.classList.add('dimmed');
+});
+
+modal.addEventListener('hide.bs.modal', function () {
+  document.querySelector('.bg-white.rounded.p-4.shadow-sm')?.classList.remove('dimmed');
+});
+
+    
+  const exampleModal = document.getElementById('exampleModal');
+  exampleModal.addEventListener('show.bs.modal', function () {
+    const input = exampleModal.querySelector('input');
+    if (input) input.value = '';
+  });
+</script>
+<script>
+
+  $('#urlSubmit').on('click', function () {
+    event.preventDefault();
+  let url = $('#article_url').val(); 
+  console.log("Extracted URL:", url);
+
+  // Clear textarea first
+  $('#content').val("");
+
+  $.ajax({
+    type: 'POST',
+    url: '/extract_text',
+    data: { article_url: url },
+    contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+    success: function (response) {
+      console.log("Headline:", response.headline);
+      console.log("Content:", response.content);
+
+    let content = response.content || "";
+
+    const disclaimer = "This is AI generated summarization, which may have errors. For context, always refer to the full article.";
+
+    if (content.startsWith(disclaimer)) {
+      content = content.slice(disclaimer.length).trim();
+    }
+
+      // Set values into form fields
+      $('#newsTitle').val(response.headline);
+      $('#newsContent').val(response.content);
+      $('#content').val(content); // ✅ This is your textarea
+
+      // Optional: Close modal after inserting
+      $('#exampleModal').modal('hide');
+    },
+    error: function (xhr) {
+      alert('Failed to extract text from URL! ');
+    }
+  });
+}); </script>
+
+
+<div class="container mt-5">
+  <div class="row mb-4 align-items-start">
+    <div class="col text-start">
+      
+        <h3 class="mb-2">Add Article</h3>
+      
+      <p>Submit new articles for review and publication approval.</p>
+    </div>
+  </div>
+  <!--
+  <div class="row mb-4 align-items-start">
+    <div class="col text-start">
+      <h3>Update User</h3>
+      <p>Update user information and manage account settings below.</p>
+    </div>
+  </div>-->
+
+  <div class="bg-white rounded p-4 shadow-sm">
+    <!--<div id="alertBoxSuccess" class="alert alert-success text-center">Test</div>-->
+
+    {% if error %}
+    <div id="alertBox" class="alert alert-danger text-center">{{ error }}</div>
+
+    <script>
+      setTimeout(function () {
+        const alertBox = document.getElementById("alertBox");
+        if (alertBox) {
+          alertBox.classList.add("fade-out");
+          setTimeout(() => (alertBox.style.display = "none"), 1000); // wait for fade to finish
+        }
+      }, 3000);
+    </script>
+
+    {% endif %} {% if success %}
+    <div id="alertBoxSuccess" class="alert alert-success text-center">
+      {{ success }}
+    </div>
+
+    <script>
+      setTimeout(function () {
+        const alertBox = document.getElementById("alertBoxSuccess");
+        if (alertBox) {
+          alertBox.classList.add("fade-out");
+          setTimeout(() => (alertBox.style.display = "none"), 1000); // wait for fade to finish
+        }
+      }, 3000);
+    </script>
+
+    {% endif %}
+    <!-- Form -->
+    <form method="POST" action="{{ url_for('main.addarticle') }}">
+
+
+
+      <div class="row mb-3">
+            <div class="col-md-12">
+               <label for="title" class="form-label">Article Title</label>
+      <input
+        type="text"
+        class="form-control"
+        id="title"
+        name="title"
+        required
+      />
+            </div>
+          </div>
+
+
+        <div class="row mb-3">
+            <div class="col-md-12">
+              <div class="position-relative mb-3">
+              <label for="content" class="form-label">Article Content</label>
+      <textarea
+        class="form-control"
+        id="content"
+        name="content"
+        rows="3"
+         style="height: 250px;"
+        required
+      ></textarea>
+
+      <a id="urlSearch"
+            class="position-absolute text-dark"
+            style="bottom: 20px; right: 15px; font-size: 1.6rem;"
+            data-bs-toggle="modal"
+            data-bs-target="#exampleModal">
+            <i class="bi bi-window-plus"></i>
+          </a>
+            </div>
+            </div>
+          </div>
+
+
+
+
+          <div class="row mb-3">
+  <div class="col-md-6">
+    <label class="form-label d-block mb-2">Label</label>
+    <div class="form-check form-check-inline">
+      <input
+        class="form-check-input"
+        type="radio"
+        name="label"
+        id="labelReal"
+        value="R"
+        required
+      />
+      <label class="form-check-label" style="font-size: 1.1rem; margin-right: .5rem;" for="labelReal">Real</label>
+    </div>
+    <div class="form-check form-check-inline">
+      <input
+        class="form-check-input"
+        type="radio"
+        name="label"
+        id="labelFake"
+        value="F"
+        required
+      />
+      <label class="form-check-label" style="font-size: 1.1rem; margin-right: .5rem;" for="labelFake">Fake</label>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+       <div class="row mb-3">
+            <div class="col-md-12">
+               <label for="source" class="form-label">Source (Optional)</label>
+      <input
+        type="text"
+        class="form-control"
+        id="source"
+        name="source"
+ 
+      />
+            </div>
+          </div>
+      
+
+
+
+
+
+    <div class="row mb-4">
+      <div class="col d-flex">
+       
+          <button type="submit" class="btn btn-primary px-3">
+            Submit
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!--
+      <div class="row mb-4">
+        <div class="col-md-6">
+          <label for="role" class="form-label">Role</label>
+          <input
+            type="role"
+            class="form-control"
+            id="role"
+            placeholder="Enter your role"
+          />
+        </div>
+      </div>-->
+  </div>
+</div>
+
+{% endblock %}

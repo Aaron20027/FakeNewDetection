@@ -1,0 +1,141 @@
+{% extends "base.html" %} {% block style_block %}
+<style>
+  .site-blocks-cover {
+    padding: 60px 0;
+    min-height: auto;
+    height: auto;
+    padding-bottom: 20vh;
+  }
+
+  @media (min-width: 768px) {
+    .site-blocks-cover {
+      padding-bottom: 20vh;
+    }
+  }
+
+  @media (min-width: 1200px) {
+    .site-blocks-cover {
+      padding-bottom: 5vh;
+    }
+  }
+</style>
+{% endblock %} {% block title_block %} News Archive {% endblock %} {% block
+content_block %}
+
+<div class="particlehead"></div>
+<div class="site-blocks-cover">
+  <div class="container pt-5">
+    <div class="row text-center mt-1">
+      <div class="col-md-12" data-aos="fade-up" data-aos-delay="400">
+        <h2 class="mb-4">
+          Fact-Checked Articles <span class="typed-words"></span>
+        </h2>
+
+        <div
+          class="bg-white rounded p-2 pt-2 shadow-sm"
+          style="height: 90vh; display: flex; flex-direction: column"
+        >
+           <div style="flex: 1; overflow-y: auto;">
+    <div class="table-responsive">
+      <table class="table table-bordered table-hover w-100 mb-3">
+        <thead>
+
+          <tr>
+            <th>Title</th>
+            <th>Article</th>
+            <th>Label</th>
+            <th>Sources</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for article in items %}
+          <tr>
+            <td><div class="scroll-hidden">{{ article.title }}</div></td>
+            <td><div class="scroll-hidden">{{ article.article_text }}</div></td>
+            <td>
+  {% if article.label == 1 %}
+    Real
+  {% elif article.label == 0 %}
+    Fake
+  {% else %}
+    Unknown
+  {% endif %}
+</td>
+            <td>
+  <div class="scroll-hidden">
+    <a href="{{ (article.sources if article.sources.startswith('http') else 'https://' + article.sources) | safe }}"
+       target="_blank" rel="noopener noreferrer">
+      {{ article.sources }}
+    </a>
+  </div>
+</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+                <nav aria-label="articles table pagination">
+                  <ul class="pagination justify-content-start">
+                    {% if page > 1 %}
+                    <li class="page-item">
+                      <a
+                        class="page-link"
+                        href="{{ url_for(url, page=page-1) }}"
+                        >Previous</a
+                      >
+                    </li>
+                    {% endif %} {% for p in range(1, total_pages + 1) %}
+                    <li class="page-item {% if p == page %}active{% endif %}">
+                      <a
+                        class="page-link"
+                        href="{{ url_for(url, page=p) }}"
+                        >{{ p }}</a
+                      >
+                    </li>
+                    {% endfor %} {% if page < total_pages %}
+                    <li class="page-item">
+                      <a
+                        class="page-link"
+                        href="{{ url_for(url, page=page+1) }}"
+                        >Next</a
+                      >
+                    </li>
+                    {% endif %}
+                  </ul>
+                </nav>
+                <!--
+          <nav aria-label="User table pagination">
+            <ul class="pagination justify-content-start">
+              {% if page > 1 %}
+              <li class="page-item">
+                <a class="page-link" href="{{ url_for(url, page=page-1) }}"
+                  >Previous</a
+                >
+              </li>
+              {% endif %} {% for p in range(1, total_pages + 1) %}
+              <li class="page-item {% if p == page %}active{% endif %}">
+                <a class="page-link" href="{{ url_for(url, page=p) }}"
+                  >{{ p }}</a
+                >
+              </li>
+              {% endfor %} {% if page < total_pages %}
+              <li class="page-item">
+                <a class="page-link" href="{{ url_for(url, page=page+1) }}"
+                  >Next</a
+                >
+              </li>
+              {% endif %}
+            </ul>
+          </nav>-->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

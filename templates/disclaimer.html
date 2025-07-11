@@ -1,0 +1,67 @@
+{% extends "base.html" %} {% block style_block %}
+<style>
+.site-blocks-cover {
+  padding: 60px 0; 
+  min-height: auto;  
+  height: auto;
+  padding-bottom: 20vh;
+
+}
+
+@media (min-width: 768px) {
+  .site-blocks-cover {
+    padding-bottom: 20vh;
+  }
+}
+
+@media (min-width: 1200px) {
+  .site-blocks-cover {
+    padding-bottom: 5vh;
+  }
+}
+
+
+</style>
+{% endblock %}
+ {% block title_block %} Disclaimer {% endblock %} {%
+block content_block %}
+
+
+    <div class="particlehead"></div>
+      <div class="site-blocks-cover">
+        
+        <div class="container">
+          <div class="row align-items-center justify-content-center text-center">
+
+            <div class="col-md-12" data-aos="fade-up" data-aos-delay="400">
+
+              <div class="row justify-content-center mb-4">
+                <div class="col-md-10 text-center">
+                  <h1 style="margin-top: 50px;">DISCLAIMER <span class="typed-words"></span></h1>
+                </br>
+
+                  <p class="lead mb-5" style="color:black">The Fake News Detection tool is developed as part of a thesis study and is intended to assist in identifying potential instances of fake news based on sentiment analysis. It is important to note that this tool <strong>cannot guarantee 100% accuracy</strong> in detecting fake news.</p>
+                  <p style="color:black"><strong>Limitations:</strong></p>
+                  <ul style="color:black;">
+                    <li><strong>Contextual Limitations:</strong> The tool is trained primarily on English-language news articles from the Philippines and may not perform well on other languages or contexts outside the scope of this study.</li>
+                    <li><strong>Accuracy:</strong> While efforts have been made to enhance the accuracy of the tool through data augmentation and testing, false positives (news marked as fake when it is not) and false negatives (news not flagged as fake when it is) may still occur.</li>
+                  </ul>
+
+                  <p style="color:black"><strong>Usage Disclaimer:</strong></p>
+                  <ul style="color:black;">
+                    <li>By using this tool, you acknowledge that it is designed for academic purposes. It should not be relied upon as the sole method for identifying fake news. Always consult multiple sources and fact-checkers for verification.</li>
+                    <li>The authors of this tool are not responsible for any misuse, misinterpretation, or reliance on the tool for critical decisions.</li>
+                  </ul>
+
+                
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div> 
+ 
+      
+
+{% endblock %}
