@@ -1,14 +1,39 @@
-# Ignore Python cache files
+# Python Bytecode
 __pycache__/
-*.pyc
+*.py[cod]
+*.pyo
 
-# Ignore virtual environment
-venv/
+# Environment Variables
 .env
 
-# Ignore node_modules (if using frontend dependencies)
-node_modules/
+# Virtual Environment
+venv/
+env/
+.venv/
+.env/
 
-# Ignore compiled files
-*.o
-*.so
+# IDE/editor config
+.vscode/
+.idea/
+
+# Flask-related
+instance/
+*.db
+*.sqlite3
+
+# Logs
+*.log
+
+# Static build (if applicable)
+build/
+dist/
+
+# Large files (optional, if not tracked by Git LFS)
+*.pt
+*.pkl
+*.csv
+*.zip
+
+# OS files
+.DS_Store
+Thumbs.db
